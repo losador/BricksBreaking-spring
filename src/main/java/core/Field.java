@@ -1,19 +1,22 @@
 package core;
 
+import lombok.Data;
+
 import java.util.Random;
 
+@Data
 public class Field {
 
     private final int ROWS;
     private final int COLUMNS;
-    private int realLength;
+    private long score;
     private Tile[][] fieldArray;
     private GameState state = GameState.PLAYING;
 
     public Field(int rowCount, int columnCount){
         this.ROWS = rowCount;
         this.COLUMNS = columnCount;
-        realLength = rowCount;
+        this.score = 0;
         this.fieldArray = new Tile[ROWS][COLUMNS];
         generateTiles();
     }
@@ -29,28 +32,17 @@ public class Field {
         }
     }
 
-    public void printField(){
-        for(int i = 0; i < COLUMNS; i++){
-            System.out.print(i + "    ");
-        }
-        System.out.println();
-
-        for(int i = 0; i < ROWS; i++){
-            for(int j = 0; j < COLUMNS; j++) {
-                System.out.print(fieldArray[i][j].toString() + "    ");
-            }
-            System.out.print(i);
-            System.out.println();
-        }
-    }
-
     /**
      * Deletes marked tiles from fieldArray
      */
     public void deleteTiles(){
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLUMNS; j++){
-                if(fieldArray[i][j].isMarked()) fieldArray[i][j].setTileColor(Color.NONE);
+                if(fieldArray[i][j].isMarked()) {
+                    fieldArray[i][j].unmark();
+                    fieldArray[i][j].setTileColor(Color.NONE);
+                    this.score += 2;
+                }
             }
         }
     }
@@ -93,8 +85,9 @@ public class Field {
         }
         // Check columns
         boolean clear;
-        while(checkForEmptyColumn()) {
-            for (int j = 1; j < COLUMNS - 1; j++) {
+        int columnsToDelete = checkForEmptyColumns() + 3;
+        while(columnsToDelete != 0) {
+            for (int j = 1; j < COLUMNS; j++) {
                 clear = true;
                 for (int i = 0; i < ROWS; i++) {
                     if (fieldArray[i][j].getTileColor() != Color.NONE) {
@@ -106,20 +99,21 @@ public class Field {
                     deleteColumn(j);
                 }
             }
+            columnsToDelete--;
         }
     }
 
-    private boolean checkForEmptyColumn(){
-        for(int j = 1; j < realLength; j++){
-            if(fieldArray[ROWS-1][j].getTileColor() == Color.NONE) return true;
+    private int checkForEmptyColumns(){
+        int count = 0;
+        for(int j = 1; j < COLUMNS; j++){
+            if(fieldArray[ROWS-1][j].getTileColor() == Color.NONE) count++;
         }
-        return false;
+        return count;
     }
 
     private void deleteColumn(int column){
-        this.realLength--;
         for(int i = 0; i < ROWS; i++){
-            for(int j = column + 1; j < COLUMNS - 1; j++) {
+            for(int j = column + 1; j < COLUMNS; j++) {
                 if (fieldArray[i][j - 1].getTileColor() != Color.NONE || fieldArray[i][j].getTileColor() == Color.NONE) break;
                 fieldArray[i][j - 1].setTileColor(fieldArray[i][j].getTileColor());
                 fieldArray[i][j].setTileColor(Color.NONE);
@@ -151,21 +145,5 @@ public class Field {
             default: break;
         }
         return null;
-    }
-
-    public Tile[][] getFieldArray() {
-        return fieldArray;
-    }
-
-    public void setFieldArray(Tile[][] fieldArray) {
-        this.fieldArray = fieldArray;
-    }
-
-    public GameState getState() {
-        return state;
-    }
-
-    public void setState(GameState state) {
-        this.state = state;
     }
 }
