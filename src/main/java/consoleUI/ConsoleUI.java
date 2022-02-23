@@ -10,10 +10,15 @@ public class ConsoleUI {
 
     public ConsoleUI(Field field){
         this.field = field;
+
     }
 
     public void printField(){
         System.out.println("Your score: " + this.field.getScore());
+        for(int i = 0; i < field.getSingleDeleteCount(); i++){
+            System.out.print("* ");
+        }
+        System.out.println();
         for(int i = 0; i < this.field.getCOLUMNS(); i++){
             System.out.print(i + "    ");
         }

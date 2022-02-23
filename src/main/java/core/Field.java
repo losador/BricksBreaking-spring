@@ -1,7 +1,9 @@
 package core;
 
+import consoleUI.ConsoleUI;
 import lombok.Data;
 
+import java.io.*;
 import java.util.Random;
 
 @Data
@@ -12,6 +14,8 @@ public class Field {
     private long score;
     private Tile[][] fieldArray;
     private GameState state = GameState.PLAYING;
+    private int singleDeleteCount = 5;
+    private int tilesToDelete = 0;
 
     public Field(int rowCount, int columnCount){
         this.ROWS = rowCount;
@@ -21,10 +25,19 @@ public class Field {
         generateTiles();
     }
 
+    public Field(int rowCount, int columnCount, String path){
+        this.ROWS = rowCount;
+        this.COLUMNS = columnCount;
+        this.score = 0;
+        this.fieldArray = new Tile[ROWS][COLUMNS];
+        loadFieldFromFile(path);
+    }
+
     /**
      * Generates random color tile on each position in array
      */
     public void generateTiles(){
+        state = GameState.PLAYING;
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLUMNS; j++){
                 this.fieldArray[i][j] = new Tile(getRandomColor());
@@ -32,16 +45,38 @@ public class Field {
         }
     }
 
+    public void loadFieldFromFile(String path){
+        File file = new File(path);
+        try (BufferedReader br = new BufferedReader(new FileReader(file))){
+            for(int i = 0; i < ROWS; i++){
+                for(int j = 0; j < COLUMNS; j++){
+                    char tmp = (char) br.read();
+                    if(tmp == 'r') fieldArray[i][j] = new Tile(Color.RED);
+                    else if(tmp == 'y') fieldArray[i][j] = new Tile(Color.YELLOW);
+                    else if(tmp == 'b') fieldArray[i][j] = new Tile(Color.BLUE);
+                    else if(tmp == ' ') fieldArray[i][j] = new Tile(Color.NONE);
+                    else throw new IllegalArgumentException("Wrong color in file or wrong size of file");
+                }
+                br.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        updateField();
+        state = GameState.PLAYING;
+    }
+
     /**
      * Deletes marked tiles from fieldArray
      */
     public void deleteTiles(){
+        if(this.tilesToDelete == 1) this.singleDeleteCount--;
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLUMNS; j++){
                 if(fieldArray[i][j].isMarked()) {
                     fieldArray[i][j].unmark();
                     fieldArray[i][j].setTileColor(Color.NONE);
-                    this.score += 2;
+                    this.score += 11;
                 }
             }
         }
@@ -55,6 +90,7 @@ public class Field {
     public void markTiles(int row, int column){
         if(row >= ROWS || column >= COLUMNS) {System.out.println("Wrong coordinates"); return;}
         fieldArray[row][column].mark();
+        this.tilesToDelete++;
         if(row != 0 && fieldArray[row-1][column].getTileColor() == fieldArray[row][column].getTileColor() && !fieldArray[row-1][column].isMarked()) markTiles(row - 1, column);
         if(row != ROWS - 1 && fieldArray[row+1][column].getTileColor() == fieldArray[row][column].getTileColor() && !fieldArray[row+1][column].isMarked()) markTiles(row + 1, column);
         if(column != 0 && fieldArray[row][column-1].getTileColor() == fieldArray[row][column].getTileColor() && !fieldArray[row][column-1].isMarked()) markTiles(row, column - 1);
@@ -87,6 +123,9 @@ public class Field {
         boolean clear;
         int columnsToDelete = checkForEmptyColumns() + 3;
         while(columnsToDelete != 0) {
+//            ConsoleUI ui = new ConsoleUI(this);
+//            System.out.println(columnsToDelete);
+//            ui.printField();
             for (int j = 1; j < COLUMNS; j++) {
                 clear = true;
                 for (int i = 0; i < ROWS; i++) {
@@ -112,8 +151,8 @@ public class Field {
     }
 
     private void deleteColumn(int column){
-        for(int i = 0; i < ROWS; i++){
-            for(int j = column + 1; j < COLUMNS; j++) {
+        for(int j = column + 1; j < COLUMNS; j++) {
+            for(int i = ROWS-1; i >= 0; i--){
                 if (fieldArray[i][j - 1].getTileColor() != Color.NONE || fieldArray[i][j].getTileColor() == Color.NONE) break;
                 fieldArray[i][j - 1].setTileColor(fieldArray[i][j].getTileColor());
                 fieldArray[i][j].setTileColor(Color.NONE);
