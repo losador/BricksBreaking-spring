@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="gamestudio-6046:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/gamestudio_6046_jar</output-path>
+    <root id="archive" name="gamestudio-6046.jar">
+      <element id="module-output" name="gamestudio-6046" />
+    </root>
+  </artifact>
+</component>

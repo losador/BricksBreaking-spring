@@ -1,6 +1,5 @@
 package core;
 
-import consoleUI.ConsoleUI;
 import lombok.Data;
 
 import java.io.*;
@@ -14,14 +13,16 @@ public class Field {
     private long score;
     private Tile[][] fieldArray;
     private GameState state = GameState.PLAYING;
-    private int singleDeleteCount = 5;
-    private int tilesToDelete = 0;
+    private int singleDeleteCount;
+    private int tilesToDelete;
 
     public Field(int rowCount, int columnCount){
         this.ROWS = rowCount;
         this.COLUMNS = columnCount;
         this.score = 0;
         this.fieldArray = new Tile[ROWS][COLUMNS];
+        this.singleDeleteCount = 5;
+        this.tilesToDelete = 0;
         generateTiles();
     }
 
@@ -30,6 +31,8 @@ public class Field {
         this.COLUMNS = columnCount;
         this.score = 0;
         this.fieldArray = new Tile[ROWS][COLUMNS];
+        this.singleDeleteCount = 5;
+        this.tilesToDelete = 0;
         loadFieldFromFile(path);
     }
 
@@ -70,7 +73,13 @@ public class Field {
      * Deletes marked tiles from fieldArray
      */
     public void deleteTiles(){
-        if(this.tilesToDelete == 1) this.singleDeleteCount--;
+        if(this.tilesToDelete == 1) {
+            if(this.singleDeleteCount > 0) this.singleDeleteCount--;
+            else{
+                System.out.println("You are not able to delete one tile");
+                return;
+            }
+        }
         for(int i = 0; i < ROWS; i++){
             for(int j = 0; j < COLUMNS; j++){
                 if(fieldArray[i][j].isMarked()) {
@@ -80,6 +89,7 @@ public class Field {
                 }
             }
         }
+        this.tilesToDelete = 0;
     }
 
     /**
@@ -108,6 +118,15 @@ public class Field {
             }
         }
         return true;
+    }
+
+    public boolean isFailed(){
+        int count = 0;
+        for(int i = 0; i < COLUMNS; i++){
+            if(fieldArray[ROWS-1][i].getTileColor() != Color.NONE) count++;
+        }
+        if(count == 1 && singleDeleteCount == 0) return true;
+        return false;
     }
 
     public void updateField(){
