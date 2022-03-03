@@ -138,20 +138,10 @@ public class Field {
             }
         }
         // Check columns
-        boolean clear;
         int columnsToDelete = checkForEmptyColumns() + 3;
         while(columnsToDelete != 0) {
             for (int j = 1; j < COLUMNS; j++) {
-                clear = true;
-                for (int i = 0; i < ROWS; i++) {
-                    if (fieldArray[i][j].getTileColor() != Color.NONE) {
-                        clear = false;
-                        break;
-                    }
-                }
-                if (clear) {
-                    deleteColumn(j);
-                }
+                if(fieldArray[ROWS-1][j].getTileColor() == Color.NONE) deleteColumn(j);
             }
             columnsToDelete--;
         }

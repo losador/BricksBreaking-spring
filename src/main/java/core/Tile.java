@@ -17,20 +17,10 @@ public class Tile {
     @Override
     public String toString() {
         String str = "";
-//        switch(this.tileColor){
-//            case RED: return "r";
-//            case YELLOW: return "y";
-//            case BLUE: return "b";
-//            case NONE: return " ";
-//            default: break;
-//        }
         if(tileColor == Color.RED) str = ANSI_RED + "□" + ANSI_RESET;
         if(tileColor == Color.YELLOW) str = ANSI_YELLOW + "□" + ANSI_RESET;
         if(tileColor == Color.BLUE) str = ANSI_BLUE + "□" + ANSI_RESET;
         if(tileColor == Color.NONE) str = " ";
-        if(this.isMarked) {
-            str = str.toUpperCase();
-        }
         return str;
     }
 
