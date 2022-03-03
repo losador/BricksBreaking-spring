@@ -10,22 +10,14 @@ import java.util.Scanner;
 public class ConsoleUI {
 
     private Field field;
-
-    public ConsoleUI(Field field){
-        this.field = field;
-    }
+    private int rowCount;
+    private int columnCount;
 
     public void printField(){
         System.out.println("Your score: " + this.field.getScore());
-        for(int i = 0; i < field.getSingleDeleteCount(); i++){
-            System.out.print("* ");
-        }
-        System.out.println();
-        for(int i = 0; i < this.field.getCOLUMNS(); i++){
-            if(i < 9) System.out.print(i + "    ");
-            if(i >= 9) System.out.print(i + "   ");
-        }
-        System.out.println();
+
+        printStars();
+        printCoordinates();
 
         for(int i = 0; i < this.field.getROWS(); i++){
             for(int j = 0; j < this.field.getCOLUMNS(); j++) {
@@ -36,15 +28,30 @@ public class ConsoleUI {
         }
     }
 
+    private void printCoordinates() {
+        for(int i = 0; i < this.field.getCOLUMNS(); i++){
+            if(i < 9) System.out.print(i + "    ");
+            if(i >= 9) System.out.print(i + "   ");
+        }
+        System.out.println();
+    }
+
+    private void printStars(){
+        for(int i = 0; i < field.getSingleDeleteCount(); i++){
+            System.out.print("* ");
+        }
+        System.out.println();
+    }
+
     public void play(){
         do{
             printField();
             handleInput();
             if(field.isSolved()){
-                field.setState(GameState.SOLVED);
                 field.setScore(field.getScore() + 500);
-                break;
+                field.generateTiles();
             }
+            field.isFailed();
         } while(field.getState() == GameState.PLAYING);
     }
 
@@ -55,6 +62,34 @@ public class ConsoleUI {
         field.markTiles(row, column);
         field.deleteTiles();
         field.updateField();
+    }
+
+    private void startText(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Welcome to BricksBreaking game");
+        System.out.println("Enter size of field (y,x)");
+        rowCount = sc.nextInt();
+        columnCount = sc.nextInt();
+    }
+
+    public void initializeField(){
+        Scanner sc = new Scanner(System.in);
+        startText();
+        String mode = getGeneratingMode();
+        StringBuilder path = new StringBuilder("src/main/java/");
+        if(mode.equals("l")){
+            System.out.println("Put your file in src/main/java and enter name of file");
+            path.append(sc.nextLine());
+            field = new Field(rowCount, columnCount, path.toString());
+        } else{
+            field = new Field(rowCount, columnCount);
+        }
+    }
+
+    private String getGeneratingMode(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("If you want to generate field randomly type 'g', if you want to load field from file type 'l'");
+        return sc.nextLine();
     }
 
 }

@@ -120,13 +120,12 @@ public class Field {
         return true;
     }
 
-    public boolean isFailed(){
+    public void isFailed(){
         int count = 0;
         for(int i = 0; i < COLUMNS; i++){
             if(fieldArray[ROWS-1][i].getTileColor() != Color.NONE) count++;
         }
-        if(count == 1 && singleDeleteCount == 0) return true;
-        return false;
+        if(count == 1 && singleDeleteCount == 0) this.state = GameState.FAILED;
     }
 
     public void updateField(){
@@ -142,9 +141,6 @@ public class Field {
         boolean clear;
         int columnsToDelete = checkForEmptyColumns() + 3;
         while(columnsToDelete != 0) {
-//            ConsoleUI ui = new ConsoleUI(this);
-//            System.out.println(columnsToDelete);
-//            ui.printField();
             for (int j = 1; j < COLUMNS; j++) {
                 clear = true;
                 for (int i = 0; i < ROWS; i++) {
