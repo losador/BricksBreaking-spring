@@ -2,8 +2,14 @@ package consoleUI;
 
 import core.Field;
 import core.GameState;
+import entity.Rating;
+import entity.Score;
 import lombok.Data;
+import service.RatingServiceJDBC;
+import service.ScoreServiceJDBC;
 
+import java.util.Date;
+import java.util.Objects;
 import java.util.Scanner;
 
 @Data
@@ -12,6 +18,7 @@ public class ConsoleUI {
     private Field field;
     private int rowCount;
     private int columnCount;
+    String name;
 
     public void printField(){
         System.out.println("Your score: " + this.field.getScore());
@@ -50,23 +57,50 @@ public class ConsoleUI {
             if(field.isSolved()){
                 field.setScore(field.getScore() + 500);
                 field.generateTiles();
+                new ScoreServiceJDBC().addScore(new Score("BricksBreaking", name, field.getScore(), new Date()));
+                stop();
             }
             field.isFailed();
         } while(field.getState() == GameState.PLAYING);
+        rate();
+    }
+
+    private void rate(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Do you want to rate the game(y,n)?");
+        String tmp = sc.nextLine();
+        if(Objects.equals(tmp, "y")){
+            System.out.println("Enter your rating(1-5)");
+            int rating  = sc.nextInt();
+            while(rating < 1 || rating > 5) {
+                System.out.println("Invalid rating, try again");
+                rating = sc.nextInt();
+            }
+            new RatingServiceJDBC().setRating(new Rating("BricksBreaking", name, rating, new Date()));
+        }
     }
 
     public void handleInput(){
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter tile coordinates of tile you want to delete: ");
+        System.out.println("Enter tile coordinates of tile you want to delete(y,x): ");
         int row = sc.nextInt(), column = sc.nextInt();
         field.markTiles(row, column);
         field.deleteTiles();
         field.updateField();
     }
 
+    private void stop(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Do you want to stop playing(y,n)?");
+        String tmp = sc.nextLine();
+        if(tmp.equals("y")) field.setState(GameState.STOPPED);
+    }
+
     private void startText(){
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to BricksBreaking game");
+        System.out.println("Enter your name: ");
+        name = sc.nextLine();
         System.out.println("Enter size of field (y,x)");
         rowCount = sc.nextInt();
         columnCount = sc.nextInt();

@@ -10,7 +10,7 @@ public class Field {
 
     private final int ROWS;
     private final int COLUMNS;
-    private long score;
+    private int score;
     private Tile[][] fieldArray;
     private GameState state = GameState.PLAYING;
     private int singleDeleteCount;
@@ -58,7 +58,7 @@ public class Field {
                     else if(tmp == 'y') fieldArray[i][j] = new Tile(Color.YELLOW);
                     else if(tmp == 'b') fieldArray[i][j] = new Tile(Color.BLUE);
                     else if(tmp == ' ') fieldArray[i][j] = new Tile(Color.NONE);
-                    else throw new IllegalArgumentException("Wrong color in file or wrong size of file");
+                    else throw new IllegalArgumentException("Wrong color in file or wrong size of field");
                 }
                 br.readLine();
             }

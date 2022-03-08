@@ -1,5 +1,5 @@
 package core;
 
 public enum GameState {
-    PLAYING, FAILED;
+    PLAYING, FAILED, STOPPED;
 }
