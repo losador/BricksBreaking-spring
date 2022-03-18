@@ -11,9 +11,9 @@ import java.util.List;
 public class RatingServiceJDBC implements RatingService {
     public static final String URL = "jdbc:postgresql://localhost/gamestudio";
     public static final String USER = "postgres";
-    public static final String PASSWORD = "lehaleha21";
+    public static final String PASSWORD = "postgres";
     public static final String SELECT = "SELECT rate FROM rating WHERE game = ? AND player = ?";
-    public static final String AVG = "SELECT AVG(rate) FROM rating;";
+    public static final String AVG = "SELECT AVG(rate) FROM rating WHERE game = 'BricksBreaking';";
     public static final String DELETE = "DELETE FROM rating";
     public static final String INSERT = "INSERT INTO rating (game, player, rate, ratedOn) VALUES (?, ?, ?, ?)";
 
@@ -28,7 +28,7 @@ public class RatingServiceJDBC implements RatingService {
             statement.setTimestamp(4, new Timestamp(rating.getRatedOn().getTime()));
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new ScoreException("Problem inserting rating", e);
+            throw new RatingException("Problem inserting rating", e);
         }
     }
 
@@ -37,9 +37,12 @@ public class RatingServiceJDBC implements RatingService {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement statement = connection.createStatement();
         ) {
-            return statement.executeUpdate(AVG);
+            try(ResultSet rs = statement.executeQuery(AVG)) {
+                rs.next();
+                return rs.getInt("avg");
+            }
         } catch (SQLException e) {
-            throw new ScoreException("Problem inserting rating", e);
+            throw new RatingException("Problem selecting average rating", e);
         }
     }
 
@@ -50,9 +53,12 @@ public class RatingServiceJDBC implements RatingService {
         ) {
             statement.setString(1, game);
             statement.setString(2, player);
-            return statement.executeUpdate();
+            try(ResultSet rs = statement.executeQuery()) {
+                rs.next();
+                return rs.getInt("rate");
+            }
         } catch (SQLException e) {
-            throw new ScoreException("Problem inserting rating", e);
+            throw new RatingException("Problem selecting rating", e);
         }
     }
 
@@ -63,7 +69,7 @@ public class RatingServiceJDBC implements RatingService {
         ) {
             statement.executeUpdate(DELETE);
         } catch (SQLException e) {
-            throw new ScoreException("Problem deleting score", e);
+            throw new RatingException("Problem deleting rating", e);
         }
     }
 }

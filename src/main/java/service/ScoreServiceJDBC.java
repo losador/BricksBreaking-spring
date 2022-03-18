@@ -11,13 +11,13 @@ import java.util.List;
 public class ScoreServiceJDBC implements ScoreService {
     public static final String URL = "jdbc:postgresql://localhost/gamestudio";
     public static final String USER = "postgres";
-    public static final String PASSWORD = "lehaleha21";
+    public static final String PASSWORD = "postgres";
     public static final String SELECT = "SELECT game, player, points, playedOn FROM score WHERE game = ? ORDER BY points DESC LIMIT 10";
     public static final String DELETE = "DELETE FROM score";
     public static final String INSERT = "INSERT INTO score (game, player, points, playedOn) VALUES (?, ?, ?, ?)";
 
     @Override
-    public void addScore(Score score) {
+    public void addScore(Score score) throws ScoreException{
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(INSERT)
         ) {
@@ -32,7 +32,7 @@ public class ScoreServiceJDBC implements ScoreService {
     }
 
     @Override
-    public List<Score> getTopScores(String game) {
+    public List<Score> getTopScores(String game) throws ScoreException{
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(SELECT);
         ) {
@@ -50,7 +50,7 @@ public class ScoreServiceJDBC implements ScoreService {
     }
 
     @Override
-    public void reset() {
+    public void reset() throws ScoreException{
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement statement = connection.createStatement();
         ) {

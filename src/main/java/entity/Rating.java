@@ -21,11 +21,10 @@ public class Rating {
 
     @Override
     public String toString() {
-        return "Comment{" +
-                "game='" + game + '\'' +
-                ", player='" + player + '\'' +
-                ", rating=" + rating +
-                ", ratedOn=" + ratedOn +
+        return  "Game: " + game +
+                ", Player: " + player +
+                ", Rating: " + rating +
+                ", Rated on: " + ratedOn +
                 '}';
     }
 }

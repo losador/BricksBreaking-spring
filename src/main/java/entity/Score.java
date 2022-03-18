@@ -52,12 +52,10 @@ public class Score {
 
     @Override
     public String toString() {
-        return "Score{" +
-                "game='" + game + '\'' +
-                ", player='" + player + '\'' +
-                ", points=" + points +
-                ", playedOn=" + playedOn +
-                '}';
+        return  "Game: " + game +
+                ", Player: " + player +
+                ", Points: " + points +
+                ", Played on: " + playedOn;
     }
 
 }

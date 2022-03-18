@@ -2,6 +2,7 @@ package tests;
 
 import core.Color;
 import core.Field;
+import core.LevelLoader;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,6 +24,7 @@ public class FieldTest {
 
     @Test
     public void checkForThreeColors(){
+        field.generateTiles();
         List<Color> colors = new ArrayList<>();
         for(int i = 0; i < rowCount; i++){
             for(int j = 0; j < columnCount; j++){
@@ -35,13 +37,22 @@ public class FieldTest {
 
     @Test
     public void checkForRightMark(){
-        field = new Field(6, 6, "src/main/java/field.txt");
-        field.markTiles(1, 0);
+        field = new LevelLoader(6, 6).loadFieldFromFile("src/main/java/field.txt");
+        field.markTiles(4, 2);
         boolean isRight = true;
-        if(!field.getFieldArray()[1][0].isMarked()) isRight = false;
-        if(!field.getFieldArray()[1][1].isMarked()) isRight = false;
-        if(!field.getFieldArray()[2][0].isMarked()) isRight = false;
-        if(!field.getFieldArray()[2][1].isMarked()) isRight = false;
+        if(!field.getFieldArray()[4][2].isMarked()) isRight = false;
+        if(!field.getFieldArray()[4][3].isMarked()) isRight = false;
         assertTrue(isRight, "Tiles are marked incorrectly");
+    }
+
+    @Test
+    public void checkForRightDelete(){
+        field = new LevelLoader(6, 6).loadFieldFromFile("src/main/java/field.txt");
+        field.markTiles(4, 2);
+        field.deleteTiles();
+        boolean isRight = true;
+        if(field.getFieldArray()[4][2].getTileColor() != Color.NONE) isRight = false;
+        if(field.getFieldArray()[4][3].getTileColor() != Color.NONE) isRight = false;
+        assertTrue(isRight, "Tiles are deleted incorrectly");
     }
 }

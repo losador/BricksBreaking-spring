@@ -22,11 +22,9 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comment{" +
-                "game='" + game + '\'' +
-                ", player='" + player + '\'' +
-                ", comment=" + comment +
-                ", commentedOn=" + commentedOn +
-                '}';
+        return  "Game: " + game +
+                ", Player: " + player +
+                ", Comment: " + comment +
+                ", Commented on: " + commentedOn;
     }
 }
