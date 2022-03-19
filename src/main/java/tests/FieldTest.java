@@ -1,8 +1,8 @@
 package tests;
 
-import core.Color;
-import core.Field;
-import core.LevelLoader;
+import sk.tuke.gamestudio.game.core.Color;
+import sk.tuke.gamestudio.game.core.Field;
+import sk.tuke.gamestudio.game.core.LevelLoader;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
