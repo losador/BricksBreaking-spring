@@ -7,17 +7,20 @@ import entity.Comment;
 import entity.Rating;
 import entity.Score;
 import lombok.Data;
-import service.CommentServiceJDBC;
-import service.RatingServiceJDBC;
-import service.ScoreServiceJDBC;
+import service.*;
+
 
 import java.util.Date;
 import java.util.Objects;
 import java.util.Scanner;
 
 @Data
-public class ConsoleUI implements UserInterface{
+public class ConsoleUI implements UserInterface {
 
+    private static final String GAME_NAME = "BricksBreaking";
+    private ScoreService scoreService = new ScoreServiceJDBC();
+    private CommentService commentService = new CommentServiceJDBC();
+    private RatingService ratingService = new RatingServiceJDBC();
     private Field field;
     private int rowCount;
     private int columnCount;
@@ -42,8 +45,7 @@ public class ConsoleUI implements UserInterface{
     private void printStartText(){
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to BricksBreaking game");
-        System.out.println("\nDestroy all the bricks by choosing them in groups of the same color. The more you get at once, the higher the score." +
-                "\nThe only way to remove a single brick is to zap it with a magic wand.\n");
+        printRules();
 
         System.out.print("Enter your name: ");
         name = sc.nextLine();
@@ -56,6 +58,11 @@ public class ConsoleUI implements UserInterface{
             rowCount = sc.nextInt();
             columnCount = sc.nextInt();
         }
+    }
+
+    private void printRules(){
+        System.out.println("\nDestroy all the bricks by choosing them in groups of the same color. The more you get at once, the higher the score." +
+                "\nThe only way to remove a single brick is to zap it with a magic wand.\n");
     }
 
     private String getGeneratingMode(){
@@ -110,7 +117,7 @@ public class ConsoleUI implements UserInterface{
             if(field.isSolved()){
                 field.setScore(field.getScore() + 500);
                 printField();
-                new ScoreServiceJDBC().addScore(new Score("BricksBreaking", name, field.getScore(), new Date()));
+                scoreService.addScore(new Score(GAME_NAME, name, field.getScore(), new Date()));
                 stop();
             }
             field.isFailed();
@@ -134,7 +141,7 @@ public class ConsoleUI implements UserInterface{
         if(tmp.equals("y")){
             System.out.print("Write your comment here(max. 64 letters): ");
             String comment = sc.nextLine();
-            new CommentServiceJDBC().addComment(new Comment("BricksBreaking", name, comment, new Date()));
+            commentService.addComment(new Comment(GAME_NAME, name, comment, new Date()));
         }
     }
 
@@ -149,7 +156,7 @@ public class ConsoleUI implements UserInterface{
                 System.out.println("Invalid rating, try again");
                 rating = sc.nextInt();
             }
-            new RatingServiceJDBC().setRating(new Rating("BricksBreaking", name, rating, new Date()));
+            ratingService.setRating(new Rating(GAME_NAME, name, rating, new Date()));
         }
     }
 
@@ -197,45 +204,63 @@ public class ConsoleUI implements UserInterface{
         String command = sc.nextLine();
         switch(command){
             case "s":
-                (new ScoreServiceJDBC().getTopScores("BricksBreaking")).forEach(e -> System.out.println(e.toString()));
+                printTopScores();
                 break;
             case "a":
-                System.out.print("Enter your comment: ");
+                System.out.print("Enter your comment(max. 64 letters): ");
                 String tmp = sc.nextLine();
-                new CommentServiceJDBC().addComment(new Comment("BricksBreaking", name, tmp, new Date()));
+                commentService.addComment(new Comment("BricksBreaking", name, tmp, new Date()));
                 break;
             case "g":
-                (new CommentServiceJDBC().getComments("BricksBreaking")).forEach(e -> System.out.println(e.toString()));
+                printComments();
                 break;
             case "r":
                 System.out.print("Enter your rate(1-5): ");
                 int rateTmp = sc.nextInt();
-                new RatingServiceJDBC().setRating(new Rating("BricksBreaking", name, rateTmp, new Date()));
+                ratingService.setRating(new Rating("BricksBreaking", name, rateTmp, new Date()));
                 break;
             case "ga":
-                int avg = new RatingServiceJDBC().getAverageRating("BricksBreaking");
+                int avg = ratingService.getAverageRating("BricksBreaking");
                 System.out.println("Average rating from game BricksBreaking is: " + avg);
                 break;
             case "gr":
                 System.out.print("Enter name of user: ");
                 String username = sc.nextLine();
-                int rate = new RatingServiceJDBC().getRating("BricksBreaking", username);
+                int rate = ratingService.getRating("BricksBreaking", username);
                 System.out.println(username + " rated " + rate);
                 break;
             case "rs":
-                new ScoreServiceJDBC().reset();
+                scoreService.reset();
                 break;
             case "rr":
-                new RatingServiceJDBC().reset();
+                ratingService.reset();
                 break;
             case "rc":
-                new CommentServiceJDBC().reset();
+                commentService.reset();
                 break;
             case "p":
                 field.setState(GameState.PLAYING);
+                break;
             default:
                 break;
         }
+    }
+
+    private void printTopScores() {
+        var scores = scoreService.getTopScores(GAME_NAME);
+        System.out.println("---------------------------------------------------------------");
+        for (int i = 0; i < scores.size(); i++) {
+            var score = scores.get(i);
+            System.out.printf("%d. %s: %d\n", i + 1, score.getPlayer(), score.getPoints());
+        }
+        System.out.println("---------------------------------------------------------------");
+    }
+
+    private void printComments(){
+        var comments = commentService.getComments(GAME_NAME);
+        System.out.println("---------------------------------------------------------------");
+        comments.forEach(e -> System.out.printf("%s: %s\n", e.getPlayer(), e.getComment()));
+        System.out.println("---------------------------------------------------------------");
     }
 
 }
