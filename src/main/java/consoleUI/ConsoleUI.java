@@ -36,12 +36,14 @@ public class ConsoleUI implements UserInterface{
             field = new Field(rowCount, columnCount);
             field.generateTiles();
         }
+        play();
     }
 
     private void printStartText(){
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to BricksBreaking game");
-        printRules();
+        System.out.println("\nDestroy all the bricks by choosing them in groups of the same color. The more you get at once, the higher the score." +
+                "\nThe only way to remove a single brick is to zap it with a magic wand.\n");
 
         System.out.print("Enter your name: ");
         name = sc.nextLine();
@@ -54,11 +56,6 @@ public class ConsoleUI implements UserInterface{
             rowCount = sc.nextInt();
             columnCount = sc.nextInt();
         }
-    }
-
-    private void printRules(){
-        System.out.println("\nDestroy all the bricks by choosing them in groups of the same color. The more you get at once, the higher the score." +
-                "\nThe only way to remove a single brick is to zap it with a magic wand.\n");
     }
 
     private String getGeneratingMode(){
