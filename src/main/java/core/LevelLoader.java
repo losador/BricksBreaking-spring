@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class LevelLoader {
     private final int ROWS;
@@ -22,6 +23,7 @@ public class LevelLoader {
      * @return generated field
      */
     public Field loadFieldFromFile(String path){
+        checkSize(path);
         File file = new File(path);
         try (BufferedReader br = new BufferedReader(new FileReader(file))){
             for(int i = 0; i < ROWS; i++){
@@ -31,7 +33,7 @@ public class LevelLoader {
                     else if(tmp == 'y') field.getFieldArray()[i][j] = new Tile(Color.YELLOW);
                     else if(tmp == 'b') field.getFieldArray()[i][j] = new Tile(Color.BLUE);
                     else if(tmp == 'n') field.getFieldArray()[i][j] = new Tile(Color.NONE);
-                    else throw new IllegalArgumentException("Wrong color in file or wrong size of field");
+                    else throw new IllegalArgumentException("Wrong color in fil");
                 }
                 br.readLine();
             }
@@ -40,6 +42,22 @@ public class LevelLoader {
         }
         field.updateField();
         return this.field;
+    }
+
+    private void checkSize(String path){
+        File file = new File(path);
+        int row = 0, column;
+        try (Scanner scanner = new Scanner(file)){
+            while(scanner.hasNextLine()){
+                String tmp = scanner.nextLine();
+                column = tmp.length();
+                if(column != COLUMNS) throw new IllegalArgumentException("Wrong size of field");
+                row++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(row != ROWS) throw new IllegalArgumentException("Wrong size of field");
     }
 
 }

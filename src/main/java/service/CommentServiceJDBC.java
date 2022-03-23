@@ -12,7 +12,7 @@ public class CommentServiceJDBC implements CommentService{
     public static final String USER = "postgres";
     public static final String PASSWORD = "postgres";
     public static final String SELECT = "SELECT * FROM comment;";
-    public static final String DELETE = "DELETE FROM rating";
+    public static final String DELETE = "DELETE FROM comment";
     public static final String INSERT = "INSERT INTO comment (game, player, comment, commentedon) VALUES (?, ?, ?, ?)";
 
 

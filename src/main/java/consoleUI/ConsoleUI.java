@@ -128,6 +128,7 @@ public class ConsoleUI implements UserInterface {
     }
 
     private void failed(){
+        printField();
         Scanner sc = new Scanner(System.in);
         System.out.println("You lose! Do you want to try again(y/n)?");
         String tmp = sc.nextLine();
