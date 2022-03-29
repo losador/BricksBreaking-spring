@@ -4,7 +4,6 @@ import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import org.junit.jupiter.api.Test;
-import service.*;
 import sk.tuke.gamestudio.service.*;
 
 import java.util.Date;
