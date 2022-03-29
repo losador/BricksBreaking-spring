@@ -211,7 +211,7 @@ public class ConsoleUI implements UserInterface{
                 printTopScores();
                 break;
             case "a":
-                System.out.print("Enter your comment: ");
+                System.out.print("Enter your comment(max. 64 letters): ");
                 String tmp = sc.nextLine();
                 commentService.addComment(new Comment("BricksBreaking", name, tmp, new Date()));
                 break;
