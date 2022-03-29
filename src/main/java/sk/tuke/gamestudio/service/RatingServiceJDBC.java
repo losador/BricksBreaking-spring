@@ -1,11 +1,8 @@
-package service;
+package sk.tuke.gamestudio.service;
 
-import entity.Rating;
-import entity.Score;
+import sk.tuke.gamestudio.entity.Rating;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class RatingServiceJDBC implements RatingService {

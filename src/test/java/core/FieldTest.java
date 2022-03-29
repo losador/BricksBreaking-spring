@@ -1,6 +1,11 @@
 package core;
 
 import org.junit.jupiter.api.Test;
+import sk.tuke.gamestudio.game.core.Color;
+import sk.tuke.gamestudio.game.core.Field;
+import sk.tuke.gamestudio.game.core.GameState;
+import sk.tuke.gamestudio.game.core.LevelLoader;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;

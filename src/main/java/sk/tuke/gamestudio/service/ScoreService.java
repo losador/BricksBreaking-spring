@@ -1,6 +1,6 @@
-package service;
+package sk.tuke.gamestudio.service;
 
-import entity.Score;
+import sk.tuke.gamestudio.entity.Score;
 
 import java.util.List;
 

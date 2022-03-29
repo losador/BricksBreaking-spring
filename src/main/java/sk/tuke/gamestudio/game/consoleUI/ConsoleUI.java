@@ -1,13 +1,14 @@
-package consoleUI;
+package sk.tuke.gamestudio.game.consoleUI;
 
-import core.Field;
-import core.GameState;
-import core.LevelLoader;
-import entity.Comment;
-import entity.Rating;
-import entity.Score;
+import sk.tuke.gamestudio.game.core.Field;
+import sk.tuke.gamestudio.game.core.GameState;
+import sk.tuke.gamestudio.game.core.LevelLoader;
+import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Rating;
+import sk.tuke.gamestudio.entity.Score;
 import lombok.Data;
 import service.*;
+import sk.tuke.gamestudio.service.*;
 
 
 import java.util.Date;

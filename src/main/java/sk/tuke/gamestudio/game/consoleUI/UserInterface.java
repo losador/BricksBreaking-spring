@@ -1,4 +1,4 @@
-package consoleUI;
+package sk.tuke.gamestudio.game.consoleUI;
 
 public interface UserInterface {
     void initializeField();

@@ -1,4 +1,4 @@
-package core;
+package sk.tuke.gamestudio.game.core;
 
 import lombok.Data;
 
