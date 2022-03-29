@@ -11,8 +11,8 @@ public class CommentServiceJDBC implements CommentService{
     public static final String URL = "jdbc:postgresql://localhost/gamestudio";
     public static final String USER = "postgres";
     public static final String PASSWORD = "postgres";
-    public static final String SELECT = "SELECT * FROM comment;";
-    public static final String DELETE = "DELETE FROM comment";
+    public static final String SELECT = "SELECT * FROM comment WHERE game = ?";
+    public static final String DELETE = "DELETE FROM rating";
     public static final String INSERT = "INSERT INTO comment (game, player, comment, commentedon) VALUES (?, ?, ?, ?)";
 
 
@@ -34,9 +34,10 @@ public class CommentServiceJDBC implements CommentService{
     @Override
     public List<Comment> getComments(String game) throws CommentException {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             Statement statement = connection.createStatement();
+             PreparedStatement statement = connection.prepareStatement(SELECT);
         ) {
-            try(ResultSet rs = statement.executeQuery(SELECT)) {
+            statement.setString(1, game);
+            try(ResultSet rs = statement.executeQuery()) {
                 List<Comment> comments = new ArrayList<>();
                 while (rs.next()) {
                     comments.add(new Comment(rs.getString("game"), rs.getString("player"), rs.getString("comment"), rs.getTimestamp("commentedon")));

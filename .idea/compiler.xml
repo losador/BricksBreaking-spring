@@ -8,13 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="KPgame" />
-        <module name="gamestudio-6046" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="KPgame" options="--add-modules java.base" />
+      <module name="KPgame" options="-parameters --add-modules java.base,java.sql" />
     </option>
   </component>
 </project>

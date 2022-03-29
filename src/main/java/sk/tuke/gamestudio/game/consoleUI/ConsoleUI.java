@@ -1,5 +1,6 @@
 package sk.tuke.gamestudio.game.consoleUI;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.game.core.Field;
 import sk.tuke.gamestudio.game.core.GameState;
 import sk.tuke.gamestudio.game.core.LevelLoader;
@@ -9,17 +10,20 @@ import sk.tuke.gamestudio.entity.Score;
 import lombok.Data;
 import sk.tuke.gamestudio.service.*;
 
-
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 @Data
-public class ConsoleUI implements UserInterface {
+public class ConsoleUI implements UserInterface{
 
     private static final String GAME_NAME = "BricksBreaking";
+    @Autowired
     private ScoreService scoreService = new ScoreServiceJDBC();
+    @Autowired
     private CommentService commentService = new CommentServiceJDBC();
+    @Autowired
     private RatingService ratingService = new RatingServiceJDBC();
     private Field field;
     private int rowCount;
@@ -128,7 +132,6 @@ public class ConsoleUI implements UserInterface {
     }
 
     private void failed(){
-        printField();
         Scanner sc = new Scanner(System.in);
         System.out.println("You lose! Do you want to try again(y/n)?");
         String tmp = sc.nextLine();

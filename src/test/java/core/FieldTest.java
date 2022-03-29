@@ -1,11 +1,11 @@
 package core;
 
-import org.junit.jupiter.api.Test;
 import sk.tuke.gamestudio.game.core.Color;
 import sk.tuke.gamestudio.game.core.Field;
-import sk.tuke.gamestudio.game.core.GameState;
 import sk.tuke.gamestudio.game.core.LevelLoader;
+import org.junit.jupiter.api.Test;
 
+import sk.tuke.gamestudio.game.core.GameState;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -25,13 +25,12 @@ public class FieldTest {
     }
 
     @Test
-    public void checkForThreeColors() {
+    public void checkForThreeColors(){
         field.generateTiles();
         List<Color> colors = new ArrayList<>();
-        for (int i = 0; i < rowCount; i++) {
-            for (int j = 0; j < columnCount; j++) {
-                if (!colors.contains(field.getFieldArray()[i][j].getTileColor()))
-                    colors.add(field.getFieldArray()[i][j].getTileColor());
+        for(int i = 0; i < rowCount; i++){
+            for(int j = 0; j < columnCount; j++){
+                if(!colors.contains(field.getFieldArray()[i][j].getTileColor())) colors.add(field.getFieldArray()[i][j].getTileColor());
             }
         }
         int size = colors.size();
@@ -39,17 +38,17 @@ public class FieldTest {
     }
 
     @Test
-    public void checkForRightMark() {
+    public void checkForRightMark(){
         field = new LevelLoader(6, 6).loadFieldFromFile("src/main/java/field.txt");
         field.markTiles(4, 2);
         boolean isRight = true;
-        if (!field.getFieldArray()[4][2].isMarked()) isRight = false;
-        if (!field.getFieldArray()[4][3].isMarked()) isRight = false;
+        if(!field.getFieldArray()[4][2].isMarked()) isRight = false;
+        if(!field.getFieldArray()[4][3].isMarked()) isRight = false;
         assertTrue(isRight, "Tiles are marked incorrectly");
     }
 
     @Test
-    public void checkForRightDelete() {
+    public void checkForRightDelete(){
         field = new LevelLoader(6, 6).loadFieldFromFile("src/main/java/field.txt");
         field.markTiles(4, 2);
         field.deleteTiles();
@@ -134,5 +133,6 @@ public class FieldTest {
         if(field.getFieldArray()[4][3].getTileColor() != Color.NONE) isRight = false;
 
         assertTrue(isRight, "Method update works incorrectly");
+
     }
 }

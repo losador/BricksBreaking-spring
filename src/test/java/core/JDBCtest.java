@@ -1,10 +1,12 @@
 package core;
 
+
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import org.junit.jupiter.api.Test;
 import sk.tuke.gamestudio.service.*;
+
 
 import java.util.Date;
 import java.util.List;
@@ -14,9 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JDBCtest {
 
-    private ScoreService scoreService;
-    private CommentService commentService;
-    private RatingService ratingService;
+    private final ScoreService scoreService;
+    private final CommentService commentService;
+    private final RatingService ratingService;
+
 
     public JDBCtest(){
         scoreService = new ScoreServiceJDBC();
