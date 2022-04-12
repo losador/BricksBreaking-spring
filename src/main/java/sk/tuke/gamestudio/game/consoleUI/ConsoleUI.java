@@ -19,11 +19,11 @@ public class ConsoleUI implements UserInterface{
 
     private static final String GAME_NAME = "BricksBreaking";
     @Autowired
-    private ScoreService scoreService = new ScoreServiceJDBC();
+    private ScoreService scoreService;
     @Autowired
-    private CommentService commentService = new CommentServiceJDBC();
+    private CommentService commentService;
     @Autowired
-    private RatingService ratingService = new RatingServiceJDBC();
+    private RatingService ratingService;
     private Field field;
     private int rowCount;
     private int columnCount;

@@ -35,11 +35,6 @@ public class SpringClient {
     }
 
     @Bean
-    public Field field() {
-        return new Field(6, 6);
-    }
-
-    @Bean
     public ScoreService scoreService() {
         return new ScoreServiceRestClient();
     }

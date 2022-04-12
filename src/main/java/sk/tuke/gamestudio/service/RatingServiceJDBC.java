@@ -21,7 +21,7 @@ public class RatingServiceJDBC implements RatingService {
         ) {
             statement.setString(1, rating.getGame());
             statement.setString(2, rating.getPlayer());
-            statement.setInt(3, rating.getRating());
+            statement.setInt(3, rating.getRate());
             statement.setTimestamp(4, new Timestamp(rating.getRatedOn().getTime()));
             statement.executeUpdate();
         } catch (SQLException e) {

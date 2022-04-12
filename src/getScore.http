@@ -1,0 +1,2 @@
+GET http://localhost:8080/api/score/BricksBreaking
+Content-Type:  application/json

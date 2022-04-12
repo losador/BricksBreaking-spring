@@ -12,9 +12,9 @@ import java.util.Date;
 
 @Entity
 @NamedQuery( name = "Rating.getAverageRating",
-        query = "SELECT avg(r.rating) FROM Rating r WHERE r.game=:game")
+        query = "SELECT avg(r.rate) FROM Rating r WHERE r.game=:game")
 @NamedQuery( name = "Rating.getRating",
-        query = "SELECT r FROM Rating r WHERE r.game=:game AND r.player=:player")
+        query = "SELECT r.rate FROM Rating r WHERE r.game=:game AND r.player=:player")
 @NamedQuery( name = "Rating.resetRating",
         query = "DELETE FROM Rating")
 @Data
@@ -24,15 +24,15 @@ public class Rating implements Serializable {
     private int ident;
     private String game;
     private String player;
-    private int rating;
+    private int rate;
     private Date ratedOn;
 
     public Rating() {}
 
-    public Rating(String game, String player, int rating, Date ratedOn) {
+    public Rating(String game, String player, int rate, Date ratedOn) {
         this.game = game;
         this.player = player;
-        this.rating = rating;
+        this.rate = rate;
         this.ratedOn = ratedOn;
     }
 
@@ -40,7 +40,7 @@ public class Rating implements Serializable {
     public String toString() {
         return  "Game: " + game +
                 ", Player: " + player +
-                ", Rating: " + rating +
+                ", Rating: " + rate +
                 ", Rated on: " + ratedOn +
                 '}';
     }

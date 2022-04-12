@@ -23,6 +23,7 @@ public class Field {
         this.fieldArray = new Tile[ROWS][COLUMNS];
         this.singleDeleteCount = 5;
         this.tilesToDelete = 0;
+        generateTiles();
     }
 
     /**

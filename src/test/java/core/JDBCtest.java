@@ -103,4 +103,11 @@ public class JDBCtest {
         assertEquals("shit", coms.get(1).getComment());
     }
 
+    @Test
+    public void test(){
+        RatingServiceJPA rating = new RatingServiceJPA();
+        int result = rating.getAverageRating("BricksBreaking");
+        assertEquals(3, result);
+    }
+
 }

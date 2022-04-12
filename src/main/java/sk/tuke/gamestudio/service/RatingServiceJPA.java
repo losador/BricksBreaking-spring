@@ -4,6 +4,7 @@ import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -30,8 +31,8 @@ public class RatingServiceJPA implements RatingService {
     @Override
     public int getRating(String game, String player) throws RatingException {
         return (int) entityManager.createNamedQuery("Rating.getRating")
-                .setParameter("game", game).setParameter("player", player)
-                .getSingleResult();
+                    .setParameter("game", game).setParameter("player", player)
+                    .getSingleResult();
     }
 
     @Override

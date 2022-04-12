@@ -1,0 +1,10 @@
+POST http://localhost:8080/api/score
+Content-type: application/json
+
+{
+  "game": "BricksBreaking",
+  "playedOn": "2022-09-05T17:31:51.809000",
+  "player": "Leha",
+  "points": 2098
+}
+
