@@ -2,22 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gamestudio</title>
+    <title>BricksBreaking</title>
     <link rel="stylesheet" href="/css/brickssheet.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="/images/icon.ico" type="image/x-icon">
 </head>
 <body>
 
-<h1>BricksBreaking
-    <a href="/bricks/new">New game</a><br>
+<h1>
+    BricksBreaking
 </h1>
 
-<h2>
-    Your score: <p th:utext="${@bricksBreakingController.getScore()}"></p>
-</h2>
-
 <div class="game-panel">
-    <div class="field"><span th:utext="${@bricksBreakingController.getHtmlField()}"></span></div>
-
+    <div class="field">
+        <span th:utext="${@bricksBreakingController.getHtmlField()}"></span>
+    </div>
+    <div class="newButton">
+        <form action="/bricks/new">
+            <button>New game</button>
+        </form>
+    </div>
+</div>
+<div class="info">
+    <h2>Your score: <span th:utext="${@bricksBreakingController.getScore()}"></span></h2><br><br>
+    <h2 class="wands" th:utext="${@bricksBreakingController.getWands()}"></h2>
+</div>
+<div class="rules">
+    <h3>Destroy all the bricks by clicking them in groups of the same color.
+        The more you get at once, the higher the score.
+        The only way to remove a single brick is to zap it with a magic wand.</h3>
 </div>
 
 </body>

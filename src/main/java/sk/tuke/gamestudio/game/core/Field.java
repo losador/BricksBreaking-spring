@@ -44,8 +44,9 @@ public class Field {
         //check if you can delete only one tile
         if(this.tilesToDelete == 1) {
             if(this.singleDeleteCount > 0) this.singleDeleteCount--;
-            else{
+            else if (this.singleDeleteCount == 0){
                 System.out.println("You are not able to delete one tile");
+                this.tilesToDelete = 0;
                 return;
             }
         }
